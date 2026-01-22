@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Gift</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(#fff0f6, #ffeef2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Comic Sans MS", cursive;
+  overflow: hidden;
+}
+
+/* Gift Box */
+.gift {
+  width: 130px;
+  height: 130px;
+  background: #ff8fab;
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.ribbon-v, .ribbon-h {
+  position: absolute;
+  background: #ffd6e0;
+}
+
+.ribbon-v {
+  width: 18px;
+  height: 100%;
+  left: 56px;
+}
+
+.ribbon-h {
+  height: 18px;
+  width: 100%;
+  top: 56px;
+}
+
+.lid {
+  position: absolute;
+  width: 150px;
+  height: 40px;
+  background: #ff6f91;
+  top: -40px;
+  left: -10px;
+  border-radius: 12px;
+  transition: transform 0.7s;
+  transform-origin: bottom center;
+}
+
+.open .lid {
+  transform: rotateX(120deg);
+}
+
+/* Floating stuff */
+.float {
+  position: absolute;
+  font-size: 26px;
+  animation: floatUp 3s ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(0.7); opacity: 1; }
+  100% { transform: translateY(-320px) scale(1.4); opacity: 0; }
+}
+
+/* Cat */
+.cat {
+  position: absolute;
+  bottom: 40px;
+  text-align: center;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: 1s;
+}
+
+.cat.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.cat-face {
+  font-size: 90px;
+}
+
+.banner {
+  margin-top: 8px;
+  padding: 12px 22px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 3px dashed #ff8fab;
+  font-size: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="gift" id="gift">
+  <div class="lid"></div>
+  <div class="ribbon-v"></div>
+  <div class="ribbon-h"></div>
+</div>
+
+<div class="cat" id="cat">
+  <div class="cat-face">🐱</div>
+  <div class="banner">please talk to me dearlythii</div>
+</div>
+
+<script>
+const gift = document.getElementById("gift");
+const cat = document.getElementById("cat");
+
+const items = ["💖","🌸","🌷","💐","✨","💕","🎀","💘"];
+
+gift.onclick = () => {
+  gift.classList.add("open");
+
+  for(let i=0;i<35;i++){
+    const el = document.createElement("div");
+    el.className = "float";
+    el.innerText = items[Math.floor(Math.random()*items.length)];
+    el.style.left = Math.random()*window.innerWidth + "px";
+    el.style.bottom = "120px";
+    document.body.appendChild(el);
+
+    setTimeout(()=>el.remove(),3000);
+  }
+
+  setTimeout(()=>cat.classList.add("show"),900);
+};
+</script>
+
+</body>
+</html>
