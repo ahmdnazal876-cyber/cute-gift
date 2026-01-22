@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A Little Gift</title>
+<title>Cat Chaos Gift</title>
 
 <style>
 body {
   margin: 0;
   height: 100vh;
-  background: linear-gradient(#fff0f6, #ffeef2);
+  background: radial-gradient(circle, #fff0f6, #ffd6e0);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,25 +17,26 @@ body {
   overflow: hidden;
 }
 
-/* Gift Box */
+/* Gift */
 .gift {
   width: 130px;
   height: 130px;
   background: #ff8fab;
-  border-radius: 12px;
+  border-radius: 16px;
   position: relative;
   cursor: pointer;
-  animation: bounce 1.5s infinite;
+  animation: shake 1s infinite;
 }
 
-@keyframes bounce {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+@keyframes shake {
+  0%,100% { transform: rotate(0deg); }
+  25% { transform: rotate(2deg); }
+  75% { transform: rotate(-2deg); }
 }
 
 .ribbon-v, .ribbon-h {
   position: absolute;
-  background: #ffd6e0;
+  background: #fff;
 }
 
 .ribbon-v {
@@ -53,56 +54,75 @@ body {
 .lid {
   position: absolute;
   width: 150px;
-  height: 40px;
+  height: 42px;
   background: #ff6f91;
-  top: -40px;
+  top: -42px;
   left: -10px;
-  border-radius: 12px;
-  transition: transform 0.7s;
+  border-radius: 16px;
+  transition: transform 0.9s;
   transform-origin: bottom center;
 }
 
 .open .lid {
-  transform: rotateX(120deg);
+  transform: rotateX(130deg);
 }
 
-/* Floating stuff */
-.float {
+/* Chaos cats */
+.cat-float {
   position: absolute;
-  font-size: 26px;
-  animation: floatUp 3s ease-out forwards;
+  font-size: 40px;
+  animation: floatSpin 5s linear forwards;
+  pointer-events: none;
 }
 
-@keyframes floatUp {
-  0% { transform: translateY(0) scale(0.7); opacity: 1; }
-  100% { transform: translateY(-320px) scale(1.4); opacity: 0; }
+@keyframes floatSpin {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-600px) rotate(720deg) scale(1.8);
+    opacity: 0;
+  }
 }
 
-/* Cat */
-.cat {
+/* Falling cats */
+.cat-rain {
   position: absolute;
-  bottom: 40px;
+  font-size: 36px;
+  animation: fall 4s linear forwards;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-50px); opacity: 1; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}
+
+/* Main cat */
+.main-cat {
+  position: absolute;
+  bottom: 30px;
   text-align: center;
   opacity: 0;
-  transform: scale(0.7);
-  transition: 1s;
+  transform: scale(0.4);
+  transition: 1.4s;
 }
 
-.cat.show {
+.main-cat.show {
   opacity: 1;
   transform: scale(1);
 }
 
-.cat-face {
-  font-size: 90px;
+.main-cat-face {
+  font-size: 110px;
 }
 
 .banner {
-  margin-top: 8px;
-  padding: 12px 22px;
+  margin-top: 12px;
+  padding: 16px 28px;
   background: #ffffff;
-  border-radius: 16px;
-  border: 3px dashed #ff8fab;
+  border-radius: 20px;
+  border: 4px dotted #ff8fab;
   font-size: 18px;
 }
 </style>
@@ -116,32 +136,47 @@ body {
   <div class="ribbon-h"></div>
 </div>
 
-<div class="cat" id="cat">
-  <div class="cat-face">🐱</div>
+<div class="main-cat" id="mainCat">
+  <div class="main-cat-face">🐱</div>
   <div class="banner">please talk to me dearlythii</div>
 </div>
 
 <script>
 const gift = document.getElementById("gift");
-const cat = document.getElementById("cat");
+const mainCat = document.getElementById("mainCat");
 
-const items = ["💖","🌸","🌷","💐","✨","💕","🎀","💘"];
+const chaosCats = [
+  "🐱","😺","😸","😹","😻","😼","🙀","😽",
+  "🐈","🐈‍⬛","🐾","💖","💕","✨","🌸"
+];
 
 gift.onclick = () => {
   gift.classList.add("open");
 
-  for(let i=0;i<35;i++){
-    const el = document.createElement("div");
-    el.className = "float";
-    el.innerText = items[Math.floor(Math.random()*items.length)];
-    el.style.left = Math.random()*window.innerWidth + "px";
-    el.style.bottom = "120px";
-    document.body.appendChild(el);
-
-    setTimeout(()=>el.remove(),3000);
+  /* Floating chaos */
+  for (let i = 0; i < 80; i++) {
+    const c = document.createElement("div");
+    c.className = "cat-float";
+    c.innerText = chaosCats[Math.floor(Math.random()*chaosCats.length)];
+    c.style.left = Math.random() * window.innerWidth + "px";
+    c.style.bottom = "120px";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 5000);
   }
 
-  setTimeout(()=>cat.classList.add("show"),900);
+  /* Cat rain */
+  const rainInterval = setInterval(() => {
+    const r = document.createElement("div");
+    r.className = "cat-rain";
+    r.innerText = chaosCats[Math.floor(Math.random()*chaosCats.length)];
+    r.style.left = Math.random() * window.innerWidth + "px";
+    r.style.top = "-40px";
+    document.body.appendChild(r);
+    setTimeout(() => r.remove(), 4000);
+  }, 150);
+
+  setTimeout(() => clearInterval(rainInterval), 3000);
+  setTimeout(() => mainCat.classList.add("show"), 1200);
 };
 </script>
 
